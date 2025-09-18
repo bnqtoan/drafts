@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Strategy & AI Production Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .tab-button.active {
+            border-color: #4f46e5;
+            color: #4f46e5;
+            background-color: #eef2ff;
+        }
+        details > summary {
+            list-style: none;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+        details[open] summary .arrow-down {
+            transform: rotate(180deg);
+        }
+        .ai-tool-textarea {
+            @apply w-full p-2 border border-gray-300 rounded-md bg-slate-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition;
+        }
+        .ai-tool-button {
+            @apply mt-2 px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold rounded-md hover:from-indigo-600 hover:to-purple-700 transition-all duration-300 shadow-lg transform hover:scale-105;
+        }
+        .ai-results {
+            @apply mt-4 p-4 border border-indigo-200 bg-indigo-50 rounded-md text-sm text-slate-700 whitespace-pre-wrap;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div>
+                    <h1 class="text-2xl font-bold text-slate-900">Content Strategy & AI Production Hub</h1>
+                    <p class="text-slate-500 mt-1">Your daily guide to creating, publishing, and optimizing content with AI.</p>
+                </div>
+                 <div id="today-focus" class="mt-4 md:mt-0 bg-indigo-50 border border-indigo-200 rounded-lg p-3 text-sm text-center">
+                    <!-- Dynamic content will be injected here -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- Core Content Pillars -->
+        <section id="pillars" class="mb-12">
+            <h2 class="text-xl font-bold mb-1">🎯 Core Content Pillars (40/40/20 Rule)</h2>
+            <p class="text-slate-600 mb-6">A balanced approach to establish expertise, build community, and drive results.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Pillar 1: Educational -->
+                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-blue-500">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-blue-700">Educational Content</h3>
+                        <span class="text-2xl font-bold text-blue-500">40%</span>
+                    </div>
+                    <p class="text-sm text-slate-500 mt-1 mb-4">Establish expertise and provide immediate value.</p>
+                    <details class="space-y-2">
+                        <summary class="cursor-pointer text-sm font-medium text-slate-600 flex justify-between items-center">View Details <svg class="w-4 h-4 arrow-down transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></summary>
+                        <ul class="list-disc list-inside text-slate-600 space-y-2 pt-2 text-sm">
+                            <li><strong>Technical Tutorials (15%):</strong> Step-by-step guides.</li>
+                            <li><strong>Tool Reviews (10%):</strong> Honest analysis.</li>
+                            <li><strong>Industry Analysis (10%):</strong> Trends & insights.</li>
+                            <li><strong>Best Practices (5%):</strong> Proven frameworks.</li>
+                        </ul>
+                    </details>
+                </div>
+                <!-- Pillar 2: Engagement -->
+                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-500">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-green-700">Engagement Content</h3>
+                        <span class="text-2xl font-bold text-green-500">40%</span>
+                    </div>
+                    <p class="text-sm text-slate-500 mt-1 mb-4">Build community and drive discussion.</p>
+                    <details class="space-y-2">
+                        <summary class="cursor-pointer text-sm font-medium text-slate-600 flex justify-between items-center">View Details <svg class="w-4 h-4 arrow-down transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></summary>
+                        <ul class="list-disc list-inside text-slate-600 space-y-2 pt-2 text-sm">
+                            <li><strong>Personal Journey (15%):</strong> Learnings & failures.</li>
+                            <li><strong>Behind-the-Scenes (10%):</strong> Daily workflows.</li>
+                            <li><strong>Community Spotlights (10%):</strong> Featuring others.</li>
+                            <li><strong>Discussion Starters (5%):</strong> Controversial takes.</li>
+                        </ul>
+                    </details>
+                </div>
+                <!-- Pillar 3: Promotional -->
+                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-purple-500">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-purple-700">Promotional Content</h3>
+                        <span class="text-2xl font-bold text-purple-500">20%</span>
+                    </div>
+                    <p class="text-sm text-slate-500 mt-1 mb-4">Drive business outcomes and monetization.</p>
+                    <details class="space-y-2">
+                        <summary class="cursor-pointer text-sm font-medium text-slate-600 flex justify-between items-center">View Details <svg class="w-4 h-4 arrow-down transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></summary>
+                        <ul class="list-disc list-inside text-slate-600 space-y-2 pt-2 text-sm">
+                            <li><strong>Product Showcases (8%):</strong> Demos of services.</li>
+                            <li><strong>Social Proof (7%):</strong> Client results & testimonials.</li>
+                            <li><strong>Soft Selling (5%):</strong> Content with CTA integration.</li>
+                        </ul>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- Content Matrix -->
+        <section id="matrix" class="mb-12">
+             <h2 class="text-xl font-bold mb-1">📊 Content Matrix by Topic & Platform</h2>
+             <p class="text-slate-600 mb-6">Tailored strategies for each audience and platform.</p>
+            <div x-data="{ activeTab: 'automation' }">
+                <div class="border-b border-gray-200 mb-6">
+                    <nav class="-mb-px flex space-x-6" aria-label="Tabs">
+                        <button @click="activeTab = 'automation'" :class="{ 'active': activeTab === 'automation' }" class="tab-button whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm text-slate-500 hover:border-slate-300">AI Automation</button>
+                        <button @click="activeTab = 'coding'" :class="{ 'active': activeTab === 'coding' }" class="tab-button whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm text-slate-500 hover:border-slate-300">Vibe Coding</button>
+                        <button @click="activeTab = 'agency'" :class="{ 'active': activeTab === 'agency' }" class="tab-button whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm text-slate-500 hover:border-slate-300">Website Agency</button>
+                    </nav>
+                </div>
+
+                <!-- AI Automation Content -->
+                <div x-show="activeTab === 'automation'" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="font-bold text-lg">LinkedIn <span class="text-sm font-medium text-slate-500">(Professional Focus)</span></h3>
+                        <p class="text-indigo-600 font-semibold mt-4 text-sm">Weekly Content Mix:</p>
+                        <ul class="mt-2 space-y-2 text-sm text-slate-600">
+                           <li><strong>Monday:</strong> Industry insight (Educational)</li>
+                           <li><strong>Tuesday:</strong> Personal journey story (Engagement)</li>
+                           <li><strong>Wednesday:</strong> Tool comparison/review (Educational)</li>
+                           <li><strong>Thursday:</strong> Behind-the-scenes process (Engagement)</li>
+                           <li><strong>Friday:</strong> Client success story (Promotional)</li>
+                        </ul>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="font-bold text-lg">Twitter/X <span class="text-sm font-medium text-slate-500">(Real-time Engagement)</span></h3>
+                        <p class="text-indigo-600 font-semibold mt-4 text-sm">Daily Posting Schedule:</p>
+                        <ul class="mt-2 space-y-2 text-sm text-slate-600">
+                           <li><strong>7 AM:</strong> Quick tip / news reaction</li>
+                           <li><strong>12 PM:</strong> Personal insight or process share</li>
+                           <li><strong>6 PM:</strong> Tool discovery or comparison</li>
+                           <li><strong>Weekly:</strong> Deep dive tutorial thread</li>
+                        </ul>
+                    </div>
+                </div>
+
+                 <!-- Vibe Coding Content -->
+                <div x-show="activeTab === 'coding'" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="font-bold text-lg">YouTube <span class="text-sm font-medium text-slate-500">(Long-form Educational)</span></h3>
+                        <p class="text-indigo-600 font-semibold mt-4 text-sm">Upload Schedule (2/week):</p>
+                        <ul class="mt-2 space-y-2 text-sm text-slate-600">
+                           <li><strong>Tuesday:</strong> Tutorial / How-to Content</li>
+                           <li><strong>Friday:</strong> Setup / Review / Behind-the-scenes</li>
+                        </ul>
+                        <p class="text-indigo-600 font-semibold mt-4 text-sm">Monthly Themes:</p>
+                         <ul class="mt-2 space-y-2 text-sm text-slate-600 list-disc list-inside">
+                           <li>Environment Optimization</li>
+                           <li>Productivity Workflows</li>
+                           <li>Creative Development</li>
+                           <li>Community & Growth</li>
+                        </ul>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="font-bold text-lg">Instagram <span class="text-sm font-medium text-slate-500">(Visual Storytelling)</span></h3>
+                        <p class="text-indigo-600 font-semibold mt-4 text-sm">Daily Content Types:</p>
+                        <ul class="mt-2 space-y-2 text-sm text-slate-600">
+                            <li><strong>Monday:</strong> Workspace Monday</li>
+                            <li><strong>Tuesday:</strong> Tutorial Carousel</li>
+                            <li><strong>Wednesday:</strong> Work in Progress</li>
+                            <li><strong>Thursday:</strong> Tool Thursday</li>
+                            <li><strong>Friday:</strong> Feature Friday (Community)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Web Design Agency Content -->
+                <div x-show="activeTab === 'agency'" class="grid grid-cols-1 gap-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="font-bold text-lg">LinkedIn <span class="text-sm font-medium text-slate-500">(B2B Authority)</span></h3>
+                        <p class="text-indigo-600 font-semibold mt-4 text-sm">Monthly Campaign Themes:</p>
+                        <div class="mt-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+                            <div class="bg-slate-50 p-3 rounded-md"><strong>Month 1:</strong> Design Process Transparency</div>
+                            <div class="bg-slate-50 p-3 rounded-md"><strong>Month 2:</strong> Business Results Focus</div>
+                            <div class="bg-slate-50 p-3 rounded-md"><strong>Month 3:</strong> Industry Education</div>
+                            <div class="bg-slate-50 p-3 rounded-md"><strong>Month 4:</strong> Community & Thought Leadership</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Weekly Production Schedule -->
+        <section id="schedule" class="mb-12">
+            <h2 class="text-xl font-bold mb-1">📅 Weekly Content Production Schedule</h2>
+            <p class="text-slate-600 mb-6">A structured workflow for consistent output.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-white p-4 rounded-lg shadow space-y-2">
+                    <h4 class="font-bold">Monday: Strategy & Planning</h4>
+                    <p class="text-xs text-slate-500">2 hours</p>
+                    <p class="text-sm text-slate-600">Review calendar, research topics, and plan weekly themes.</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow space-y-2">
+                    <h4 class="font-bold">Tuesday: Educational Content</h4>
+                    <p class="text-xs text-slate-500">3 hours</p>
+                    <p class="text-sm text-slate-600">Deep creation session for blogs, scripts, articles.</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow space-y-2">
+                    <h4 class="font-bold">Wednesday: Visual & Short-form</h4>
+                     <p class="text-xs text-slate-500">2 hours</p>
+                    <p class="text-sm text-slate-600">Create carousels, threads, and short videos.</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow space-y-2">
+                    <h4 class="font-bold">Thursday: Engagement</h4>
+                     <p class="text-xs text-slate-500">1.5 hours</p>
+                    <p class="text-sm text-slate-600">Respond to comments, engage with community.</p>
+                </div>
+                 <div class="bg-white p-4 rounded-lg shadow space-y-2">
+                    <h4 class="font-bold">Friday: Repurposing & Optimization</h4>
+                     <p class="text-xs text-slate-500">2 hours</p>
+                    <p class="text-sm text-slate-600">Adapt successful content for other platforms.</p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow space-y-2">
+                    <h4 class="font-bold">Weekend: Review & Prep</h4>
+                    <p class="text-xs text-slate-500">1 hour</p>
+                    <p class="text-sm text-slate-600">Analyze analytics and prepare for the week ahead.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Production Workflow -->
+        <section id="ai-workflow" class="mb-12">
+            <h2 class="text-xl font-bold mb-1">🤖 AI-Powered Production Workflow</h2>
+            <p class="text-slate-600 mb-6">Leverage AI at every stage of the content lifecycle. Click prompts to copy.</p>
+            <div class="space-y-6">
+                <!-- Ideation Phase -->
+                <details class="bg-white p-6 rounded-lg shadow-md" open>
+                    <summary class="font-semibold text-lg cursor-pointer flex justify-between items-center">
+                        Phase 1: Content Ideation & Research
+                        <svg class="w-6 h-6 arrow-down transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                    </summary>
+                    <div class="mt-4">
+                        <h4 class="font-semibold text-slate-700 mb-2">AI Prompt: Generate Content Ideas</h4>
+                        <div class="relative">
+                            <pre class="bg-slate-800 text-white p-4 rounded-md text-xs overflow-x-auto"><code class="language-prompt">Act as a content strategist for [your niche]. Based on current trends, generate 20 content ideas that:
+
+1. Address common pain points in [specific area]
+2. Leverage trending topics/news in the industry
+3. Can be adapted across multiple platforms
+
+For each idea, provide:
+- Main topic/angle
+- Target audience pain point
+- Potential headline/hook
+- Key insights to cover
+- Platform suitability</code></pre>
+                            <button onclick="copyCode(this)" class="absolute top-2 right-2 bg-slate-600 hover:bg-slate-500 text-white text-xs font-bold py-1 px-2 rounded">Copy</button>
+                        </div>
+                    </div>
+                </details>
+                 <!-- Creation Phase -->
+                <details class="bg-white p-6 rounded-lg shadow-md">
+                    <summary class="font-semibold text-lg cursor-pointer flex justify-between items-center">
+                        Phase 2: Content Creation & Production
+                        <svg class="w-6 h-6 arrow-down transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                    </summary>
+                    <div class="mt-4">
+                        <h4 class="font-semibold text-slate-700 mb-2">AI Prompt: Create Long-Form Content</h4>
+                        <div class="relative">
+                            <pre class="bg-slate-800 text-white p-4 rounded-md text-xs overflow-x-auto"><code class="language-python"># Simplified prompt from Python class
+Write comprehensive content based on this outline: [content_structure]
+
+Requirements:
+- Conversational but authoritative tone
+- Include specific examples and personal insights
+- Optimize for AI citation with clear answers
+- Include actionable takeaways
+- Use storytelling elements where appropriate
+- Target length: 1500 words
+- Platform: [target_platform]</code></pre>
+                            <button onclick="copyCode(this)" class="absolute top-2 right-2 bg-slate-600 hover:bg-slate-500 text-white text-xs font-bold py-1 px-2 rounded">Copy</button>
+                        </div>
+                    </div>
+                </details>
+                <!-- Repurposing Phase -->
+                <details class="bg-white p-6 rounded-lg shadow-md">
+                    <summary class="font-semibold text-lg cursor-pointer flex justify-between items-center">
+                        Phase 3: Content Repurposing & Adaptation
+                        <svg class="w-6 h-6 arrow-down transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                    </summary>
+                     <div class="mt-4">
+                        <h4 class="font-semibold text-slate-700 mb-2">AI Prompt: Blog Post to Twitter Thread</h4>
+                        <div class="relative">
+                            <pre class="bg-slate-800 text-white p-4 rounded-md text-xs overflow-x-auto"><code class="language-prompt">Convert this blog post into an engaging Twitter thread:
+
+Original Content: [paste content]
+
+Thread Requirements:
+- 8-12 tweets maximum
+- Tweet 1: Hook + promise of value
+- Tweets 2-10: Key insights (one main point per tweet)
+- Final tweet: Summary + CTA
+- Use emojis and formatting for readability
+- Each tweet under 280 characters</code></pre>
+                            <button onclick="copyCode(this)" class="absolute top-2 right-2 bg-slate-600 hover:bg-slate-500 text-white text-xs font-bold py-1 px-2 rounded">Copy</button>
+                        </div>
+                    </div>
+                </details>
+                 <!-- Optimization Phase -->
+                <details class="bg-white p-6 rounded-lg shadow-md">
+                    <summary class="font-semibold text-lg cursor-pointer flex justify-between items-center">
+                        Phase 4: Performance Analysis & Optimization
+                        <svg class="w-6 h-6 arrow-down transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                    </summary>
+                     <div class="mt-4">
+                        <h4 class="font-semibold text-slate-700 mb-2">AI Prompt: Weekly Performance Review</h4>
+                        <div class="relative">
+                            <pre class="bg-slate-800 text-white p-4 rounded-md text-xs overflow-x-auto"><code class="language-prompt">Act as a content performance analyst. I'll provide you with this week's content data.
+
+PLATFORM DATA:
+- LinkedIn: [metrics]
+- Twitter: [metrics]
+- YouTube: [metrics]
+
+Based on this data, provide:
+1. Performance Patterns: What worked and why?
+2. Optimization Opportunities: How to improve underperforming content?
+3. Strategy Adjustments: What should I focus on next week?
+4. Topic Recommendations: What content ideas should I prioritize?</code></pre>
+                            <button onclick="copyCode(this)" class="absolute top-2 right-2 bg-slate-600 hover:bg-slate-500 text-white text-xs font-bold py-1 px-2 rounded">Copy</button>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white border-t">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center text-sm text-slate-500">
+            <p>Content Strategy Dashboard | Created to be your daily content companion.</p>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script>
+        function copyCode(button) {
+            const pre = button.previousElementSibling;
+            const code = pre.querySelector('code');
+            const text = code.innerText;
+
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            const originalText = button.innerText;
+            button.innerText = 'Copied!';
+            setTimeout(() => {
+                button.innerText = originalText;
+            }, 2000);
+        }
+
+        // Set Today's Focus
+        document.addEventListener('DOMContentLoaded', function() {
+            const focusDiv = document.getElementById('today-focus');
+            const dayOfWeek = new Date().toLocaleString('en-us', {  weekday: 'long' });
+            
+            let focusText = '';
+            let emoji = '';
+
+            switch(dayOfWeek) {
+                case 'Monday':
+                    emoji = '📈';
+                    focusText = 'Strategy & Planning';
+                    break;
+                case 'Tuesday':
+                    emoji = '✍️';
+                    focusText = 'Educational Content Creation';
+                    break;
+                case 'Wednesday':
+                    emoji = '🎨';
+                    focusText = 'Visual & Short-form Content';
+                    break;
+                case 'Thursday':
+                    emoji = '💬';
+                    focusText = 'Community Engagement';
+                    break;
+                case 'Friday':
+                    emoji = '🔄';
+                    focusText = 'Repurposing & Optimization';
+                    break;
+                case 'Saturday':
+                case 'Sunday':
+                    emoji = '📊';
+                    focusText = 'Review & Preparation';
+                    break;
+                default:
+                    emoji = '🚀';
+                    focusText = 'Execute with purpose!';
+            }
+            focusDiv.innerHTML = `<span class="font-bold">Today is ${dayOfWeek}:</span> <span class="ml-1">${emoji} ${focusText}</span>`;
+        });
+    </script>
+</body>
+</html>
+

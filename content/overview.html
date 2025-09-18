@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platform Optimization Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827;
+            color: #d1d5db;
+        }
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar-link {
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link.active {
+            border-left-color: #3b82f6;
+            background-color: #1f2937;
+            color: #eff6ff;
+        }
+        .sidebar-link:hover {
+            background-color: #1f2937;
+        }
+        .card {
+            background-color: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 0.75rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+        }
+        .content-pane {
+            display: none;
+        }
+        .content-pane.active {
+            display: block;
+        }
+        /* Custom styles for checklists and timelines */
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #374151;
+        }
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+        .checklist-icon {
+            margin-right: 0.75rem;
+            color: #3b82f6;
+        }
+        .timeline {
+            position: relative;
+            padding-left: 2.5rem;
+        }
+        .timeline-item {
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+        .timeline-marker {
+            position: absolute;
+            left: -2rem;
+            top: 0.25rem;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background-color: #3b82f6;
+            border: 2px solid #1f2937;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 1rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #374151;
+        }
+        .code-block {
+            background-color: #111827;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #9ca3af;
+        }
+        /* Mobile nav */
+        #mobile-nav-toggle {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            #sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100%;
+                z-index: 40;
+            }
+            #sidebar.open {
+                transform: translateX(0);
+            }
+            #mobile-nav-toggle {
+                display: block;
+            }
+            main {
+                margin-left: 0 !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900">
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <nav id="sidebar" class="w-64 bg-gray-800 text-gray-300 p-4 space-y-2 flex-shrink-0 sidebar">
+            <h2 class="text-2xl font-bold text-white mb-4">Dashboard</h2>
+            <a href="#" class="sidebar-link active flex items-center p-2 rounded-lg" data-target="twitter">🐦<span class="ml-3">Twitter/X</span></a>
+            <a href="#" class="sidebar-link flex items-center p-2 rounded-lg" data-target="linkedin">💼<span class="ml-3">LinkedIn</span></a>
+            <a href="#" class="sidebar-link flex items-center p-2 rounded-lg" data-target="youtube">📺<span class="ml-3">YouTube</span></a>
+            <a href="#" class="sidebar-link flex items-center p-2 rounded-lg" data-target="blog">📝<span class="ml-3">Blog/SEO</span></a>
+            <a href="#" class="sidebar-link flex items-center p-2 rounded-lg" data-target="universal">🎯<span class="ml-3">Universal Framework</span></a>
+            <a href="#" class="sidebar-link flex items-center p-2 rounded-lg" data-target="vietnam">🇻🇳<span class="ml-3">Vietnam Market</span></a>
+            <a href="#" class="sidebar-link flex items-center p-2 rounded-lg" data-target="templates">📚<span class="ml-3">Template Library</span></a>
+            <a href="#" class="sidebar-link flex items-center p-2 rounded-lg" data-target="citation">💡<span class="ml-3">AI Citation Checklist</span></a>
+            <a href="#" class="sidebar-link flex items-center p-2 rounded-lg" data-target="strategy">📅<span class="ml-3">Content Strategy</span></a>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4 md:p-8 overflow-y-auto" style="height: 100vh;">
+            <header class="flex justify-between items-center mb-8">
+                 <button id="mobile-nav-toggle" class="md:hidden p-2 rounded-md bg-gray-800 text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+                <div class="text-center w-full">
+                    <h1 class="text-3xl md:text-4xl font-bold text-white">Platform Optimization Dashboard</h1>
+                    <p class="text-lg text-gray-400 mt-2">Your daily guide to advanced content strategies (2025 Updates)</p>
+                </div>
+            </header>
+
+            <!-- Twitter/X Content -->
+            <div id="twitter-content" class="content-pane active">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="card p-6">
+                        <h3 class="text-xl font-bold text-white mb-4">The "Golden 60 Minutes"</h3>
+                        <div class="timeline">
+                            <div class="timeline-item"><div class="timeline-marker"></div><h4 class="font-semibold text-blue-400">0-15 Min</h4><p class="text-sm">Algorithm tests with 1-5% of followers.</p></div>
+                            <div class="timeline-item"><div class="timeline-marker"></div><h4 class="font-semibold text-blue-400">15-30 Min</h4><p class="text-sm">Expansion if 2%+ engagement.</p></div>
+                            <div class="timeline-item"><div class="timeline-marker"></div><h4 class="font-semibold text-blue-400">30-45 Min</h4><p class="text-sm">Broader reach if 5%+ engagement.</p></div>
+                            <div class="timeline-item"><div class="timeline-marker"></div><h4 class="font-semibold text-blue-400">45-60 Min</h4><p class="text-sm">Viral potential if 10%+ engagement.</p></div>
+                        </div>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="text-xl font-bold text-white mb-4">Engagement Quality Hierarchy</h3>
+                        <ul class="space-y-3">
+                            <li class="flex justify-between items-center"><span class="font-semibold">Replies (4+ words)</span><span class="text-green-400 font-bold">5x</span></li>
+                            <li class="flex justify-between items-center"><span class="font-semibold">Quote Tweets</span><span class="text-green-400 font-bold">4x</span></li>
+                            <li class="flex justify-between items-center"><span class="font-semibold">Retweets w/ Comment</span><span class="text-green-400 font-bold">3x</span></li>
+                            <li class="flex justify-between items-center"><span class="font-semibold">Bookmarks</span><span class="text-yellow-400 font-bold">2x</span></li>
+                            <li class="flex justify-between items-center"><span class="font-semibold">Likes</span><span class="text-yellow-400 font-bold">1x</span></li>
+                            <li class="flex justify-between items-center"><span class="font-semibold">Regular Retweets</span><span class="text-orange-400 font-bold">0.8x</span></li>
+                        </ul>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="text-xl font-bold text-white mb-4">Daily Engagement Workflow</h3>
+                        <div>
+                            <div class="checklist-item"><span class="checklist-icon">☀️</span> <span><strong class="text-blue-300">Morning (15m):</strong> Reply, post insight, engage 5-7 posts.</span></div>
+                            <div class="checklist-item"><span class="checklist-icon">🕛</span> <span><strong class="text-blue-300">Lunch (15m):</strong> Share news, reply, engage trends.</span></div>
+                            <div class="checklist-item"><span class="checklist-icon">🌙</span> <span><strong class="text-blue-300">Evening (15m):</strong> Post thread, engage network, plan.</span></div>
+                        </div>
+                    </div>
+                    <div class="card p-6 lg:col-span-2">
+                        <h3 class="text-xl font-bold text-white mb-4">Technical Tutorial Thread Structure</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 text-center">
+                            <div class="p-3 bg-gray-800 rounded-lg"><p class="font-bold">1. Hook</p><p class="text-sm text-blue-300">30-40%</p></div>
+                            <div class="p-3 bg-gray-800 rounded-lg"><p class="font-bold">2. Problem</p><p class="text-sm text-red-400">↓ 20-25%</p></div>
+                            <div class="p-3 bg-gray-800 rounded-lg col-span-2 md:col-span-1 lg:col-span-3"><p class="font-bold">3-5. Solution</p><p class="text-sm text-gray-400">Steady 15-20%</p></div>
+                            <div class="p-3 bg-gray-800 rounded-lg"><p class="font-bold">6. Proof</p><p class="text-sm text-green-400">↑ 25-30%</p></div>
+                            <div class="p-3 bg-gray-800 rounded-lg"><p class="font-bold">7. CTA</p><p class="text-sm text-blue-300">15-20%</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LinkedIn Content -->
+            <div id="linkedin-content" class="content-pane">
+                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                    <div class="card p-6 lg:col-span-2">
+                        <h3 class="text-xl font-bold text-white mb-4">Content Type Performance</h3>
+                        <div class="relative h-80">
+                            <canvas id="linkedinChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="text-xl font-bold text-white mb-4">Optimal Posting Strategy</h3>
+                        <div class="space-y-3">
+                            <p><strong class="text-blue-300">Timing:</strong> Tue-Thu, 8-10 AM</p>
+                            <p><strong class="text-blue-300">Engagement:</strong> Reply within 2 hours</p>
+                            <p><strong class="text-blue-300">Follow-up:</strong> Add insights after 24 hours</p>
+                            <p><strong class="text-blue-300">Cross-promote:</strong> Share to Stories after 48 hours</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 gap-6">
+                     <div class="card p-6">
+                        <h3 class="text-xl font-bold text-white mb-4">High-Engagement Video Format (Tutorial)</h3>
+                        <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 text-center">
+                            <div class="flex-1 p-4 bg-gray-800 rounded-lg"><p class="font-bold text-blue-300">0-3s</p><p>Hook</p></div>
+                            <div class="flex-1 p-4 bg-gray-800 rounded-lg"><p class="font-bold text-blue-300">3-15s</p><p>Problem Setup</p></div>
+                            <div class="flex-1 p-4 bg-gray-800 rounded-lg"><p class="font-bold text-blue-300">15s-2m30s</p><p>Solution Walkthrough</p></div>
+                            <div class="flex-1 p-4 bg-gray-800 rounded-lg"><p class="font-bold text-blue-300">2m30s-3m</p><p>Results & Next Steps</p></div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="card p-6">
+                            <h3 class="text-xl font-bold text-white mb-4">Lead Gen: Day 1</h3>
+                            <p class="text-sm"><strong>Type:</strong> Connection Confirmation<br><strong>Action:</strong> Thank them, express interest in their work, ask about current projects.</p>
+                        </div>
+                        <div class="card p-6">
+                            <h3 class="text-xl font-bold text-white mb-4">Lead Gen: Day 7</h3>
+                            <p class="text-sm"><strong>Type:</strong> Value-First Follow-up<br><strong>Action:</strong> Share a relevant article or resource based on their interests.</p>
+                        </div>
+                        <div class="card p-6">
+                            <h3 class="text-xl font-bold text-white mb-4">Lead Gen: Day 30</h3>
+                            <p class="text-sm"><strong>Type:</strong> Soft Pitch<br><strong>Action:</strong> If appropriate, share your relevant project results and offer to share more.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- YouTube Content -->
+            <div id="youtube-content" class="content-pane">
+                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="card p-6">
+                        <h3 class="text-xl font-bold text-white mb-4">Algorithm Success Factors</h3>
+                        <ol class="list-decimal list-inside space-y-2">
+                            <li><strong>Watch time retention:</strong> Aim for >50%</li>
+                            <li><strong>Click-through rate (CTR):</strong> Aim for 8-12%</li>
+                            <li><strong>Session duration:</strong> Encourage binge-watching</li>
+                            <li><strong>Engagement velocity:</strong> Likes/comments in 24h</li>
+                            <li><strong>Subscriber conversion:</strong> New subs per video</li>
+                        </ol>
+                    </div>
+                     <div class="card p-6">
+                        <h3 class="text-xl font-bold text-white mb-4">Video Retention Framework</h3>
+                        <div class="space-y-4">
+                            <div class="p-4 bg-gray-800 rounded-lg"><p><strong class="text-blue-300">0-15s: Hook & Promise.</strong> Start with the most exciting outcome and promise a specific learning objective.</p></div>
+                            <div class="p-4 bg-gray-800 rounded-lg"><p><strong class="text-blue-300">15s-1m: Context & Problem.</strong> Explain why it matters and set up the solution.</p></div>
+                             <div class="p-4 bg-gray-800 rounded-lg"><p><strong class="text-blue-300">Main Content: Solution Delivery.</strong> Step-by-step implementation with clear explanations.</p></div>
+                             <div class="p-4 bg-gray-800 rounded-lg"><p><strong class="text-blue-300">Final 30s: Payoff & Next Steps.</strong> Recap the key benefit and provide a clear call-to-action.</p></div>
+                        </div>
+                    </div>
+                     <div class="card p-6 lg:col-span-2">
+                        <h3 class="text-xl font-bold text-white mb-4">High-CTR Thumbnail Checklist</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                           <div class="flex items-center space-x-2 p-3 bg-gray-800 rounded-lg"><svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span>Face/Emotion</span></div>
+                           <div class="flex items-center space-x-2 p-3 bg-gray-800 rounded-lg"><svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 011-1h1a2 2 0 100-4H7a1 1 0 01-1-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"></path></svg><span>3-6 Word Text</span></div>
+                           <div class="flex items-center space-x-2 p-3 bg-gray-800 rounded-lg"><svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg><span>High Contrast</span></div>
+                           <div class="flex items-center space-x-2 p-3 bg-gray-800 rounded-lg"><svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg><span>Before/After</span></div>
+                           <div class="flex items-center space-x-2 p-3 bg-gray-800 rounded-lg"><svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg><span>Tool Logos</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog/SEO Content -->
+            <div id="blog-content" class="content-pane">
+                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                     <div class="card p-6">
+                        <h3 class="text-xl font-bold text-white mb-4">On-Page SEO Checklist</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
+                            <div class="flex items-center"><span class="checklist-icon">✓</span> Single H1 Tag</div>
+                            <div class="flex items-center"><span class="checklist-icon">✓</span> Logical H2-H6</div>
+                            <div class="flex items-center"><span class="checklist-icon">✓</span> Meta Title (50-60 chars)</div>
+                            <div class="flex items-center"><span class="checklist-icon">✓</span> Meta Desc (150-160 chars)</div>
+                            <div class="flex items-center"><span class="checklist-icon">✓</span> Clean URL Structure</div>
+                            <div class="flex items-center"><span class="checklist-icon">✓</span> 3-5 Internal Links</div>
+                            <div class="flex items-center"><span class="checklist-icon">✓</span> 2-3 External Links</div>
+                            <div class="flex items-center"><span class="checklist-icon">✓</span> Image Alt Tags</div>
+                        </div>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="text-xl font-bold text-white mb-4">Technical SEO Goals</h3>
+                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
+                            <div class="flex items-center"><span class="checklist-icon">🚀</span> Page Speed &lt; 3s</div>
+                            <div class="flex items-center"><span class="checklist-icon">📱</span> Mobile Optimized</div>
+                            <div class="flex items-center"><span class="checklist-icon">🧾</span> Schema Markup</div>
+                            <div class="flex items-center"><span class="checklist-icon">💯</span> Green Core Web Vitals</div>
+                        </div>
+                    </div>
+                     <div class="card p-6 lg:col-span-2">
+                        <h3 class="text-xl font-bold text-white mb-4">AI-Friendly Content Structure</h3>
+                        <div class="code-block">
+                            <span class="text-gray-500">&lt;article&gt;</span><br>
+                            &nbsp;&nbsp;<span class="text-gray-500">&lt;h1&gt;</span><span class="text-blue-400">Primary Topic + Benefit</span><span class="text-gray-500">&lt;/h1&gt;</span><br><br>
+                            &nbsp;&nbsp;<span class="text-gray-500">&lt;section class="quick-answer"&gt;</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-gray-500">&lt;h2&gt;</span>Quick Answer<span class="text-gray-500">&lt;/h2&gt;</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-gray-500">&lt;p&gt;</span>Direct answer in first paragraph.<span class="text-gray-500">&lt;/p&gt;</span><br>
+                            &nbsp;&nbsp;<span class="text-gray-500">&lt;/section&gt;</span><br><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-gray-500">&lt;ol&gt;...&lt;/ol&gt;</span><br>
+                            &nbsp;&nbsp;<span class="text-gray-500">&lt;/section&gt;</span><br><br>
+                             &nbsp;&nbsp;<span class="text-gray-500">&lt;section class="faq"&gt;</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-gray-500">&lt;h2&gt;</span>FAQ Section<span class="text-gray-500">&lt;/h2&gt;</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-gray-500">&lt;div itemscope itemtype=".../FAQPage"&gt;...&lt;/div&gt;</span><br>
+                            &nbsp;&nbsp;<span class="text-gray-500">&lt;/section&gt;</span><br>
+                            <span class="text-gray-500">&lt;/article&gt;</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Universal Framework Content -->
+            <div id="universal-content" class="content-pane">
+                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="card p-6">
+                        <h3 class="text-xl font-bold text-white mb-4">Universal Authority Framework</h3>
+                        <ul class="space-y-3 list-none">
+                            <li class="flex items-start"><span class="checklist-icon">1.</span> <strong>Experience-First:</strong> Frame content with personal or professional experience.</li>
+                            <li class="flex items-start"><span class="checklist-icon">2.</span> <strong>Data-Driven:</strong> Include 1-2 relevant stats or credible sources.</li>
+                            <li class="flex items-start"><span class="checklist-icon">3.</span> <strong>Practical Focus:</strong> Provide actionable steps, templates, or examples.</li>
+                            <li class="flex items-start"><span class="checklist-icon">4.</span> <strong>Community-Centered:</strong> Ask questions and build on existing conversations.</li>
+                        </ul>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="text-xl font-bold text-white mb-4">30-Second Topic Analysis</h3>
+                        <p class="mb-3 text-sm text-gray-400">Quickly assess your authority level to choose the right content angle.</p>
+                        <div class="space-y-2">
+                            <div class="p-2 bg-gray-800 rounded-md"><strong>Expert (8-10/10):</strong> Share advanced, contrarian insights.</div>
+                            <div class="p-2 bg-gray-800 rounded-md"><strong>Experienced (6-7/10):</strong> Document journeys, compare tools.</div>
+                            <div class="p-2 bg-gray-800 rounded-md"><strong>Learning (4-5/10):</strong> Chronicle exploration, share resources.</div>
+                            <div class="p-2 bg-gray-800 rounded-md"><strong>Curious (1-3/10):</strong> Interview experts, present research.</div>
+                        </div>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="text-xl font-bold text-white mb-4">10-Minute Content Framework</h3>
+                        <p class="mb-3 text-sm text-gray-400">The "Curated Insight" approach for rapid content creation.</p>
+                         <div class="timeline">
+                            <div class="timeline-item"><div class="timeline-marker"></div><h4 class="font-semibold text-blue-400">1. Find (3m)</h4><p class="text-sm">Gather 3-5 high-quality sources.</p></div>
+                            <div class="timeline-item"><div class="timeline-marker"></div><h4 class="font-semibold text-blue-400">2. Connect (2m)</h4><p class="text-sm">Identify 1-2 patterns or connections.</p></div>
+                            <div class="timeline-item"><div class="timeline-marker"></div><h4 class="font-semibold text-blue-400">3. Add (2m)</h4><p class="text-sm">Add your unique perspective or question.</p></div>
+                            <div class="timeline-item"><div class="timeline-marker"></div><h4 class="font-semibold text-blue-400">4. Format (3m)</h4><p class="text-sm">Format for the platform with a hook.</p></div>
+                        </div>
+                    </div>
+                    <div class="card p-6 lg:col-span-2">
+                        <h3 class="text-xl font-bold text-white mb-4">Universal Content Templates</h3>
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                            <div class="p-4 bg-gray-800 rounded-lg"><h4 class="font-bold text-blue-300 mb-2">The "Learning Journey"</h4><p class="text-sm">Share what you learned about a topic after a specific experience. Structure: Context -> Discovery -> Insights -> Implementation.</p></div>
+                            <div class="p-4 bg-gray-800 rounded-lg"><h4 class="font-bold text-blue-300 mb-2">The "Trend Analysis"</h4><p class="text-sm">Offer a contrarian or deeper view on a popular topic. Structure: Current Narrative -> Deeper Data -> Contrarian View -> Implications.</p></div>
+                            <div class="p-4 bg-gray-800 rounded-lg"><h4 class="font-bold text-blue-300 mb-2">The "Synthesis"</h4><p class="text-sm">Connect two seemingly unrelated topics to reveal novel insights. Structure: Obvious Connection -> Deeper Integration -> Cross-Domain Learning.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vietnam Market Content -->
+            <div id="vietnam-content" class="content-pane">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="card p-6">
+                        <h3 class="text-xl font-bold text-white mb-4">Vietnam Platform Dominance</h3>
+                        <div class="relative h-80">
+                            <canvas id="vietnamChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="text-xl font-bold text-white mb-4">Business Communication Norms</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="font-semibold text-green-400 mb-2">✅ Do</h4>
+                                <ul class="list-disc list-inside text-sm space-y-1">
+                                    <li>Use formal greetings</li>
+                                    <li>Ask permission to share</li>
+                                    <li>Position as experience</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-red-400 mb-2">❌ Don't</h4>
+                                <ul class="list-disc list-inside text-sm space-y-1">
+                                    <li>Be overly direct</li>
+                                    <li>Say "this is wrong"</li>
+                                    <li>Claim to be an "expert"</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card p-6 lg:col-span-2">
+                        <h3 class="text-xl font-bold text-white mb-4">Trust Building & Monetization Timeline</h3>
+                        <div class="timeline">
+                            <div class="timeline-item"><div class="timeline-marker"></div><h4 class="font-semibold text-blue-400">Months 1-6: Trust Building ($0 Revenue)</h4><p class="text-sm">Focus on free workshops, open-source, speaking, and free consultations. Goal is relationships, not revenue.</p></div>
+                            <div class="timeline-item"><div class="timeline-marker"></div><h4 class="font-semibold text-blue-400">Months 7-12: Soft Monetization ($1-3k/mo)</h4><p class="text-sm">Introduce paid workshops, digital templates, and sponsored content. Convert free value to initial revenue.</p></div>
+                             <div class="timeline-item"><div class="timeline-marker"></div><h4 class="font-semibold text-blue-400">Months 13-24: Scale & Premium ($5-15k/mo)</h4><p class="text-sm">Offer corporate consulting, premium courses, and done-for-you services. Solidify market leadership.</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Template Library Content -->
+            <div id="templates-content" class="content-pane">
+                 <div class="space-y-6">
+                    <div>
+                        <h3 class="text-2xl font-bold text-white mb-4">Vibe Coding & Dev Setup</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="card p-4"><h4 class="font-semibold">AI-Assisted Dev Tutorial</h4><p class="text-sm text-gray-400">Showcase building a feature with AI assistants, comparing the results to traditional methods.</p></div>
+                            <div class="card p-4"><h4 class="font-semibold">Aesthetic Dev Environment</h4><p class="text-sm text-gray-400">Guide on creating a personalized, productive, and visually pleasing coding setup.</p></div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white mb-4">AI Automation</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="card p-4"><h4 class="font-semibold">ROI-Focused Case Study</h4><p class="text-sm text-gray-400">Detail an automation project, breaking down the process, costs, and calculating the final ROI.</p></div>
+                            <div class="card p-4"><h4 class="font-semibold">No-Code Tool Comparison</h4><p class="text-sm text-gray-400">An in-depth, data-driven comparison of popular automation platforms for specific use cases.</p></div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white mb-4">Website Design Agency</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="card p-4"><h4 class="font-semibold">Design Process Case Study</h4><p class="text-sm text-gray-400">From discovery to launch, document a website redesign and its impact on key metrics.</p></div>
+                            <div class="card p-4"><h4 class="font-semibold">Design Tool Stack Review</h4><p class="text-sm text-gray-400">A comprehensive review of your design tool stack, including costs and ROI justifications.</p></div>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+
+            <!-- AI Citation Checklist -->
+            <div id="citation-content" class="content-pane">
+                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="card p-6 lg:col-span-2">
+                        <h3 class="text-xl font-bold text-white mb-4">Daily Workflow (45-60 min)</h3>
+                         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-center">
+                            <div class="p-3 bg-gray-800 rounded-lg"><p class="font-bold">Engage</p><p class="text-sm text-blue-300">15 min</p></div>
+                            <div class="p-3 bg-gray-800 rounded-lg"><p class="font-bold">Create</p><p class="text-sm text-blue-300">20 min</p></div>
+                            <div class="p-3 bg-gray-800 rounded-lg"><p class="font-bold">Monitor</p><p class="text-sm text-blue-300">10 min</p></div>
+                            <div class="p-3 bg-gray-800 rounded-lg"><p class="font-bold">Plan</p><p class="text-sm text-blue-300">10 min</p></div>
+                        </div>
+                    </div>
+                     <div class="card p-6">
+                        <h3 class="text-xl font-bold text-white mb-4">Content Format Citation Rate</h3>
+                        <ul class="space-y-2">
+                            <li class="flex justify-between items-center"><span class="font-semibold">Product Docs</span><span class="text-green-400 font-bold">70%</span></li>
+                            <li class="flex justify-between items-center"><span class="font-semibold">Tutorials</span><span class="text-green-400 font-bold">65%</span></li>
+                            <li class="flex justify-between items-center"><span class="font-semibold">FAQ Content</span><span class="text-green-400 font-bold">60%</span></li>
+                            <li class="flex justify-between items-center"><span class="font-semibold">Case Studies</span><span class="text-yellow-400 font-bold">55%</span></li>
+                            <li class="flex justify-between items-center"><span class="font-semibold">Comparisons</span><span class="text-yellow-400 font-bold">50%</span></li>
+                        </ul>
+                    </div>
+                     <div class="card p-6">
+                        <h3 class="text-xl font-bold text-white mb-4">Essential Tools Stack</h3>
+                        <p class="text-sm text-gray-400 mb-3">Approx. $200-500/month</p>
+                        <ul class="space-y-2 text-sm">
+                            <li><strong>Content:</strong> Jasper AI Pro ($59)</li>
+                            <li><strong>Design:</strong> Canva Pro ($15)</li>
+                            <li><strong>Repurposing:</strong> Repurpose.io ($25)</li>
+                            <li><strong>Analytics:</strong> SE Ranking ($39)</li>
+                            <li><strong>Scheduling:</strong> Buffer Pro ($15)</li>
+                        </ul>
+                    </div>
+                    <div class="card p-6">
+                         <h3 class="text-xl font-bold text-white mb-4">Key Metric Targets (Months 1-3)</h3>
+                         <ul class="space-y-2">
+                            <li><strong class="text-blue-300">Citation Rate:</strong> 25-30%</li>
+                            <li><strong class="text-blue-300">LinkedIn Engagement:</strong> 3-5%</li>
+                             <li><strong class="text-blue-300">Twitter Engagement:</strong> 2-4%</li>
+                             <li><strong class="text-blue-300">Email Open Rate:</strong> 15%+</li>
+                         </ul>
+                    </div>
+                    <div class="card p-6 lg:col-span-2">
+                        <h3 class="text-xl font-bold text-white mb-4">Success Patterns vs. Red Flags</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                             <div>
+                                <h4 class="font-semibold text-green-400 mb-2">✅ Signs You're On Track</h4>
+                                <ul class="list-disc list-inside text-sm space-y-1">
+                                    <li>AI models are citing your content</li>
+                                    <li>Organic reach is increasing</li>
+                                    <li>Receiving quality engagement</li>
+                                    <li>Business inquiries from content</li>
+                                    <li>Collaboration opportunities</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-red-400 mb-2">❌ Red Flags to Avoid</h4>
+                                <ul class="list-disc list-inside text-sm space-y-1">
+                                    <li>Posting frequency over consistency</li>
+                                    <li>Generic content with no expertise</li>
+                                    <li>No personal insights in AI content</li>
+                                    <li>Ignoring community engagement</li>
+                                    <li>Not tracking AI citations</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+
+            <!-- Content Strategy -->
+            <div id="strategy-content" class="content-pane">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                    <div class="card p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Educational Content</h3>
+                        <p class="text-3xl font-bold text-blue-400 mb-2">40%</p>
+                        <p class="text-sm text-gray-400">Establish expertise and provide immediate value through tutorials, reviews, and analysis.</p>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Engagement Content</h3>
+                        <p class="text-3xl font-bold text-green-400 mb-2">40%</p>
+                        <p class="text-sm text-gray-400">Build community and drive discussion with personal stories and behind-the-scenes content.</p>
+                    </div>
+                     <div class="card p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Promotional Content</h3>
+                        <p class="text-3xl font-bold text-yellow-400 mb-2">20%</p>
+                        <p class="text-sm text-gray-400">Drive business outcomes via showcases, social proof, and soft-sell CTAs.</p>
+                    </div>
+                </div>
+                 <div class="card p-6 mb-6">
+                    <h3 class="text-xl font-bold text-white mb-4">Weekly Content Production Workflow</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 text-center">
+                        <div class="p-3 bg-gray-800 rounded-lg"><p class="font-bold">Mon</p><p class="text-sm text-blue-300">Strategy & Plan</p></div>
+                        <div class="p-3 bg-gray-800 rounded-lg"><p class="font-bold">Tue</p><p class="text-sm text-blue-300">Long-Form</p></div>
+                        <div class="p-3 bg-gray-800 rounded-lg"><p class="font-bold">Wed</p><p class="text-sm text-blue-300">Visuals/Shorts</p></div>
+                        <div class="p-3 bg-gray-800 rounded-lg"><p class="font-bold">Thu</p><p class="text-sm text-blue-300">Engage</p></div>
+                        <div class="p-3 bg-gray-800 rounded-lg"><p class="font-bold">Fri</p><p class="text-sm text-blue-300">Repurpose</p></div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="card p-6">
+                        <h3 class="text-xl font-bold text-white mb-4">AI-Powered Production</h3>
+                        <div class="timeline">
+                            <div class="timeline-item"><div class="timeline-marker"></div><h4 class="font-semibold text-blue-400">1. Ideation & Research</h4><p class="text-sm">Use AI to analyze trends, find content gaps, and generate initial ideas.</p></div>
+                            <div class="timeline-item"><div class="timeline-marker"></div><h4 class="font-semibold text-blue-400">2. Creation & Production</h4><p class="text-sm">Leverage AI for drafting, structuring, and optimizing long-form content.</p></div>
+                            <div class="timeline-item"><div class="timeline-marker"></div><h4 class="font-semibold text-blue-400">3. Repurposing & Adaptation</h4><p class="text-sm">Use AI to adapt core content into threads, carousels, and video scripts.</p></div>
+                            <div class="timeline-item"><div class="timeline-marker"></div><h4 class="font-semibold text-blue-400">4. QA & Optimization</h4><p class="text-sm">Have AI review content for quality, citation potential, and engagement.</p></div>
+                        </div>
+                    </div>
+                     <div class="card p-6">
+                        <h3 class="text-xl font-bold text-white mb-4">Key Performance Indicators</h3>
+                        <ul class="space-y-3">
+                            <li><strong class="text-blue-300">LinkedIn:</strong> Engagement Rate (>5%), Profile Views</li>
+                            <li><strong class="text-blue-300">Twitter/X:</strong> Thread Performance, Reply Quality</li>
+                            <li><strong class="text-blue-300">YouTube:</strong> Watch Time (>50%), CTR (8-12%)</li>
+                            <li><strong class="text-blue-300">Blog/SEO:</strong> Organic Traffic, AI Citation Rate</li>
+                             <li><strong class="text-blue-300">Business:</strong> Content-Sourced Leads, Speaking Gigs</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            const contentPanes = document.querySelectorAll('.content-pane');
+            const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+            const sidebar = document.getElementById('sidebar');
+
+            // Sidebar navigation logic
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    sidebarLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+
+                    contentPanes.forEach(pane => pane.classList.remove('active'));
+                    const targetPane = document.getElementById(link.dataset.target + '-content');
+                    if(targetPane) {
+                        targetPane.classList.add('active');
+                        // Hide mobile sidebar on navigation
+                        if(window.innerWidth < 768) {
+                            sidebar.classList.remove('open');
+                        }
+                    }
+                    // Trigger chart rendering if the target pane is visible
+                    if (link.dataset.target === 'linkedin') initLinkedInChart();
+                    if (link.dataset.target === 'vietnam') initVietnamChart();
+                });
+            });
+
+            // Mobile nav toggle
+            mobileNavToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+            });
+            document.addEventListener('click', function(event) {
+                if (!sidebar.contains(event.target) && !mobileNavToggle.contains(event.target) && sidebar.classList.contains('open')) {
+                    sidebar.classList.remove('open');
+                }
+            });
+            
+            // --- Chart Initialization ---
+            let linkedinChartInstance = null;
+            function initLinkedInChart() {
+                const ctx = document.getElementById('linkedinChart').getContext('2d');
+                if (linkedinChartInstance) { linkedinChartInstance.destroy(); }
+                linkedinChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Carousel', 'Video', 'Text + Image', 'Document', 'Text-only', 'Link'],
+                        datasets: [{
+                            label: 'Average Engagement Rate (%)',
+                            data: [5.9, 5.1, 4.7, 4.2, 3.8, 1.9],
+                            backgroundColor: ['rgba(59, 130, 246, 0.7)','rgba(34, 197, 94, 0.7)','rgba(234, 179, 8, 0.7)','rgba(168, 85, 247, 0.7)','rgba(236, 72, 153, 0.7)','rgba(239, 68, 68, 0.7)'],
+                            borderColor: ['rgba(59, 130, 246, 1)','rgba(34, 197, 94, 1)','rgba(234, 179, 8, 1)','rgba(168, 85, 247, 1)','rgba(236, 72, 153, 1)','rgba(239, 68, 68, 1)'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+                        scales: { x: { beginAtZero: true, grid: { color: '#374151' }, ticks: { color: '#d1d5db' } }, y: { grid: { color: 'transparent' }, ticks: { color: '#d1d5db' } } }
+                    }
+                });
+            }
+
+            let vietnamChartInstance = null;
+            function initVietnamChart() {
+                const ctx = document.getElementById('vietnamChart').getContext('2d');
+                if (vietnamChartInstance) { vietnamChartInstance.destroy(); }
+                vietnamChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Zalo', 'Facebook', 'YouTube', 'TikTok', 'LinkedIn'],
+                        datasets: [{
+                            label: 'Users in Vietnam (Millions)',
+                            data: [74, 68, 63, 45, 6],
+                            backgroundColor: ['rgba(59, 130, 246, 0.7)','rgba(34, 197, 94, 0.7)','rgba(239, 68, 68, 0.7)','rgba(234, 179, 8, 0.7)','rgba(168, 85, 247, 0.7)'],
+                            borderColor: ['rgba(59, 130, 246, 1)','rgba(34, 197, 94, 1)','rgba(239, 68, 68, 1)','rgba(234, 179, 8, 1)','rgba(168, 85, 247, 1)'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+                        scales: { x: { grid: { color: '#374151' }, ticks: { color: '#d1d5db' } }, y: { beginAtZero: true, grid: { color: 'transparent' }, ticks: { color: '#d1d5db' } } }
+                    }
+                });
+            }
+            
+            // Initial chart load for the default active tab if needed
+            const activeLink = document.querySelector('.sidebar-link.active');
+            if (activeLink && activeLink.dataset.target === 'linkedin') {
+                initLinkedInChart();
+            }
+        });
+    </script>
+</body>
+</html>
+
