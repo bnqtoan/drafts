@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phương Pháp Reverse Engineering Bằng AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #e5e5e5;
+        }
+        .hero-bg {
+            background-color: #0a0a0a;
+            background-image: radial-gradient(#1a1a1a 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .glow-text {
+            text-shadow: 0 0 8px rgba(59, 130, 246, 0.6), 0 0 20px rgba(59, 130, 246, 0.4);
+        }
+        details > summary {
+            list-style: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+        details[open] > summary {
+            background-color: #1f2937;
+        }
+        .tab-button.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .card-do {
+            border: 1px solid rgba(74, 222, 128, 0.4);
+            background: linear-gradient(145deg, rgba(20, 83, 45, 0.2), rgba(16, 16, 16, 0.1));
+        }
+        .card-dont {
+            border: 1px solid rgba(248, 113, 113, 0.4);
+            background: linear-gradient(145deg, rgba(127, 29, 29, 0.2), rgba(16, 16, 16, 0.1));
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Hero Section -->
+    <div id="top" class="hero-bg min-h-screen flex items-center justify-center p-4">
+        <div class="text-center space-y-6 max-w-4xl mx-auto">
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight text-white leading-tight">
+                Giải Mã Mọi Công Thức Thành Công. <br class="hidden md:block">
+                <span class="text-blue-400 glow-text">Suy Ngược Cách Làm Bằng AI.</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">
+                Thay vì mò mẫm từ đầu, hãy để AI phân tích những case study tốt nhất và trao cho bạn một framework hoàn chỉnh để hành động.
+            </p>
+            <div>
+                <a href="#process" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105">
+                    Khám Phá Quy Trình 4 Bước
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 space-y-20">
+        
+        <!-- The Method Section -->
+        <section class="text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Đây là phương pháp <span class="text-blue-400">Reverse Engineering</span> cho kỷ nguyên AI.</h2>
+            <p class="text-lg text-gray-400 max-w-3xl mx-auto">
+                Bạn không cần tự mình tìm ra quy trình. Thay vào đó, bạn cung cấp cho AI các "đáp án" (case study thành công), và nó sẽ suy ngược lại "cách giải" (pattern và framework) để bạn áp dụng cho bài toán của riêng mình.
+            </p>
+        </section>
+
+        <!-- 4-Step Process Section -->
+        <section id="process">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Step 1 -->
+                <div class="bg-gray-900 p-6 rounded-xl border border-gray-800 text-center transition hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-900/20">
+                    <div class="text-blue-400 font-black text-6xl mb-3">1</div>
+                    <h3 class="text-xl font-bold mb-2">Thu Thập Dữ Liệu</h3>
+                    <p class="text-gray-400">Tìm các case study, best practices, hoặc kết quả mẫu trong lĩnh vực bạn quan tâm.</p>
+                </div>
+                <!-- Step 2 -->
+                <div class="bg-gray-900 p-6 rounded-xl border border-gray-800 text-center transition hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-900/20">
+                    <div class="text-blue-400 font-black text-6xl mb-3">2</div>
+                    <h3 class="text-xl font-bold mb-2">Phân Tích Với AI</h3>
+                    <p class="text-gray-400">Dùng AI để tìm điểm chung, cấu trúc ẩn, và các nguyên tắc cốt lõi.</p>
+                </div>
+                <!-- Step 3 -->
+                <div class="bg-gray-900 p-6 rounded-xl border border-gray-800 text-center transition hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-900/20">
+                    <div class="text-blue-400 font-black text-6xl mb-3">3</div>
+                    <h3 class="text-xl font-bold mb-2">Tổng Hợp Framework</h3>
+                    <p class="text-gray-400">Biến các pattern thành quy trình, checklist, template có thể tái sử dụng.</p>
+                </div>
+                <!-- Step 4 -->
+                <div class="bg-gray-900 p-6 rounded-xl border border-gray-800 text-center transition hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-900/20">
+                    <div class="text-blue-400 font-black text-6xl mb-3">4</div>
+                    <h3 class="text-xl font-bold mb-2">Tùy Chỉnh & Áp Dụng</h3>
+                    <p class="text-gray-400">Điều chỉnh framework cho phù hợp với ngữ cảnh và thử nghiệm thực tế.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Interactive AI Playground -->
+        <section id="ai-playground">
+            <div class="bg-gray-900 border border-gray-800 rounded-2xl p-6 md:p-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-2">Đến lượt bạn. Hãy tạo ví dụ của riêng mình.</h2>
+                <p class="text-gray-400 text-center mb-6">Bạn muốn áp dụng phương pháp này cho lĩnh vực nào? Hãy để AI mô phỏng của chúng tôi tạo ra một quy trình mẫu.</p>
+                
+                <div class="max-w-2xl mx-auto">
+                    <div class="space-y-4">
+                        <textarea id="ai-input" class="w-full h-24 p-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-white placeholder-gray-500" placeholder="Ví dụ: Tôi là một Content Creator muốn tăng engagement trên mạng xã hội."></textarea>
+                        <button id="generate-btn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition duration-300">
+                            ✨ Tạo Ví Dụ Mới Bằng AI
+                        </button>
+                    </div>
+                     <div class="text-center mt-4">
+                        <p class="text-sm text-gray-500 mb-2">Hoặc thử các gợi ý sau:</p>
+                        <div class="flex flex-wrap gap-2 justify-center">
+                            <button class="suggestion-btn bg-gray-700 hover:bg-gray-600 text-gray-300 text-sm py-1 px-3 rounded-full transition">...cho ngành Giáo dục</button>
+                            <button class="suggestion-btn bg-gray-700 hover:bg-gray-600 text-gray-300 text-sm py-1 px-3 rounded-full transition">...cho phân tích tài chính</button>
+                            <button class="suggestion-btn bg-gray-700 hover:bg-gray-600 text-gray-300 text-sm py-1 px-3 rounded-full transition">...để viết một cuốn sách</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="ai-output" class="mt-8 p-6 bg-black/50 border border-gray-800 rounded-lg hidden">
+                    <!-- AI generated content will appear here -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- Use Cases Section -->
+        <section id="use-cases">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-8">Dành cho tất cả mọi người, từ <span class="text-blue-400">Developer</span> đến <span class="text-blue-400">Manager</span>.</h2>
+            
+            <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+                <div class="flex flex-col sm:flex-row border-b border-gray-800">
+                    <button class="tab-button flex-1 p-4 font-semibold text-gray-400 hover:bg-gray-800 transition active" data-tab="tech">Kỹ thuật & Sản phẩm</button>
+                    <button class="tab-button flex-1 p-4 font-semibold text-gray-400 hover:bg-gray-800 transition" data-tab="management">Quản lý & Vận hành</button>
+                    <button class="tab-button flex-1 p-4 font-semibold text-gray-400 hover:bg-gray-800 transition" data-tab="expert">Chuyên môn & Học tập</button>
+                </div>
+
+                <div class="p-4 md:p-8 space-y-4">
+                    <!-- Tech & Product Tab -->
+                    <div class="tab-content active" id="tech">
+                        <h3 class="text-2xl font-bold text-blue-400 mb-2">Tăng tốc "Idea to MVP"</h3>
+                        <p class="text-gray-400 mb-6"><b class="text-white">Vấn đề:</b> Quy trình từ ý tưởng → MVP quá dài và rời rạc.</p>
+                        <div class="space-y-3">
+                            <details class="bg-gray-800/50 border border-gray-700 rounded-lg">
+                                <summary class="p-4 font-semibold text-lg flex justify-between items-center">Bước 1: Thu thập mẫu <span class="text-2xl font-thin transform transition-transform duration-200 details-arrow">+</span></summary>
+                                <div class="p-4 border-t border-gray-700 text-gray-400">
+                                    <ul class="list-disc list-inside space-y-2">
+                                        <li>Tìm 5-10 case study về sản phẩm MVP thành công (Product Hunt, Indie Hackers, Y Combinator).</li>
+                                        <li>Thu thập user flow, wireframe, tech stack của các MVP nổi tiếng.</li>
+                                        <li>Lưu lại các bài viết "How we built X in 2 weeks".</li>
+                                    </ul>
+                                </div>
+                            </details>
+                             <details class="bg-gray-800/50 border border-gray-700 rounded-lg">
+                                <summary class="p-4 font-semibold text-lg flex justify-between items-center">Bước 2: Phân tích pattern với AI <span class="text-2xl font-thin transform transition-transform duration-200 details-arrow">+</span></summary>
+                                <div class="p-4 border-t border-gray-700 text-gray-400">
+                                    <p class="mb-2 font-semibold text-white">Prompt mẫu:</p>
+                                    <blockquote class="border-l-4 border-blue-500 pl-4 py-2 bg-gray-900/50 rounded-r-md">
+                                        <p>Tôi có 5 case study về MVP thành công [đính kèm hoặc paste nội dung]. Hãy phân tích và trích xuất:</p>
+                                        <ol class="list-decimal list-inside mt-2 space-y-1">
+                                            <li>Các bước chung nhất trong quy trình từ ý tưởng đến launch</li>
+                                            <li>Công cụ/tech stack được sử dụng nhiều nhất</li>
+                                            <li>Những gì họ CẮT BỎ để ship nhanh</li>
+                                            <li>Timeline trung bình cho mỗi giai đoạn</li>
+                                            <li>Điểm chung trong cách validate idea trước khi code</li>
+                                        </ol>
+                                        <p class="mt-2">Sau đó tạo một framework 7 ngày để đi từ idea → clickable prototype.</p>
+                                    </blockquote>
+                                </div>
+                            </details>
+                            <details class="bg-gray-800/50 border border-gray-700 rounded-lg">
+                                <summary class="p-4 font-semibold text-lg flex justify-between items-center">Bước 3: Tổng hợp framework <span class="text-2xl font-thin transform transition-transform duration-200 details-arrow">+</span></summary>
+                                <div class="p-4 border-t border-gray-700 text-gray-400">
+                                     <p class="font-semibold text-white">AI sẽ cho bạn output dạng Sprint MVP 7 ngày:</p>
+                                     <ul class="list-disc list-inside mt-2 space-y-1">
+                                         <li><b>Day 1:</b> Problem validation (user interviews, landing page test)</li>
+                                         <li><b>Day 2:</b> Competitor analysis + Core feature definition</li>
+                                         <li><b>Day 3-4:</b> Lo-fi wireframe + User flow (Figma/Excalidraw)</li>
+                                         <li><b>Day 5:</b> Interactive prototype (Framer/v0.dev)</li>
+                                         <li><b>Day 6-7:</b> Code core flow (Next.js starter + Supabase)</li>
+                                     </ul>
+                                </div>
+                            </details>
+                             <details class="bg-gray-800/50 border border-gray-700 rounded-lg">
+                                <summary class="p-4 font-semibold text-lg flex justify-between items-center">Bước 4: Áp dụng & Nâng cao <span class="text-2xl font-thin transform transition-transform duration-200 details-arrow">+</span></summary>
+                                <div class="p-4 border-t border-gray-700 text-gray-400">
+                                     <p><b class="text-white">Áp dụng thực tế:</b> Đưa framework vào dự án của bạn và bắt đầu xây dựng.</p>
+                                     <p class="mt-2"><b class="text-white">Kỹ thuật nâng cao - "Automated Pattern Detection":</b> Dựa trên các case study thực tế về Product Hunt launch, bạn có thể phân tích các pattern chung.</p>
+                                </div>
+                            </details>
+                        </div>
+                    </div>
+
+                    <!-- Management & Ops Tab -->
+                    <div class="tab-content" id="management">
+                        <h3 class="text-2xl font-bold text-blue-400 mb-2">Nhân bản kỹ năng AI cho team</h3>
+                        <p class="text-gray-400 mb-6"><b class="text-white">Vấn đề:</b> Bạn dùng AI giỏi nhưng không biết cách dạy lại nhân viên.</p>
+                        <!-- Collapsible content for Management -->
+                        <div class="space-y-3">
+                            <details class="bg-gray-800/50 border border-gray-700 rounded-lg">
+                                <summary class="p-4 font-semibold text-lg flex justify-between items-center">Bước 1: Thu thập mẫu từ chính bạn <span class="text-2xl font-thin transform transition-transform duration-200 details-arrow">+</span></summary>
+                                <div class="p-4 border-t border-gray-700 text-gray-400">
+                                    <ul class="list-disc list-inside space-y-2">
+                                        <li>Record lại 10 conversation với AI mà bạn thấy hữu ích nhất.</li>
+                                        <li>Lưu các prompt template bạn hay dùng.</li>
+                                        <li>Note lại quy trình tư duy của bạn khi giải quyết vấn đề bằng AI.</li>
+                                    </ul>
+                                </div>
+                            </details>
+                            <details class="bg-gray-800/50 border border-gray-700 rounded-lg">
+                                <summary class="p-4 font-semibold text-lg flex justify-between items-center">Bước 2: Phân tích pattern với AI <span class="text-2xl font-thin transform transition-transform duration-200 details-arrow">+</span></summary>
+                                <div class="p-4 border-t border-gray-700 text-gray-400">
+                                     <p class="mb-2 font-semibold text-white">Prompt mẫu:</p>
+                                    <blockquote class="border-l-4 border-blue-500 pl-4 py-2 bg-gray-900/50 rounded-r-md">
+                                        <p>Đây là 10 cuộc hội thoại với AI mà tôi thấy hiệu quả [paste conversations]. Hãy phân tích và tìm pattern...</p>
+                                        <p class="mt-2">Từ đó tạo: 1 guideline 1 trang "AI Best Practices for [team/role]", 5 prompt templates, 1 checklist "Good Prompt vs Bad Prompt".</p>
+                                    </blockquote>
+                                </div>
+                            </details>
+                             <details class="bg-gray-800/50 border border-gray-700 rounded-lg">
+                                <summary class="p-4 font-semibold text-lg flex justify-between items-center">Bước 3 & 4: Tạo training material, Pilot và Iterate <span class="text-2xl font-thin transform transition-transform duration-200 details-arrow">+</span></summary>
+                                <div class="p-4 border-t border-gray-700 text-gray-400">
+                                     <p><b class="text-white">Tạo training material:</b> AI sẽ giúp bạn tạo "AI Playbook", prompt templates, video walkthrough...</p>
+                                     <p class="mt-2"><b class="text-white">Pilot và Iterate:</b> Chọn 2-3 người test trước, review output, dùng AI để so sánh và cải thiện guideline.</p>
+                                     <p class="mt-2 font-semibold text-white">Prompt để AI đánh giá:</p>
+                                    <blockquote class="border-l-4 border-blue-500 pl-4 py-2 bg-gray-900/50 rounded-r-md mt-1">
+                                        <p>Đây là output của nhân viên [paste work] và đây là guideline [paste guideline]. Đánh giá theo tiêu chí...</p>
+                                    </blockquote>
+                                </div>
+                            </details>
+                        </div>
+                    </div>
+
+                    <!-- Expert & Learning Tab -->
+                    <div class="tab-content" id="expert">
+                        <h3 class="text-2xl font-bold text-blue-400 mb-2">Học kỹ năng mới với AI như personal tutor</h3>
+                        <p class="text-gray-400 mb-6"><b class="text-white">Vấn đề:</b> Học Marketing (mới) hoặc đi sâu Data Analysis (chuyên) chưa có lộ trình rõ ràng.</p>
+                        <!-- Collapsible content for Expert -->
+                        <div class="space-y-3">
+                             <details class="bg-gray-800/50 border border-gray-700 rounded-lg">
+                                <summary class="p-4 font-semibold text-lg flex justify-between items-center">Bước 1: Thu thập learning path từ experts <span class="text-2xl font-thin transform transition-transform duration-200 details-arrow">+</span></summary>
+                                <div class="p-4 border-t border-gray-700 text-gray-400">
+                                    <ul class="list-disc list-inside space-y-2">
+                                        <li>Tìm case study về những người chuyển ngành thành công.</li>
+                                        <li>Đọc blog của những người làm dual-role.</li>
+                                        <li>Thu thập syllabus của các khóa học liên quan.</li>
+                                    </ul>
+                                </div>
+                            </details>
+                             <details class="bg-gray-800/50 border border-gray-700 rounded-lg">
+                                <summary class="p-4 font-semibold text-lg flex justify-between items-center">Bước 2: Dùng AI reverse-engineer learning path <span class="text-2xl font-thin transform transition-transform duration-200 details-arrow">+</span></summary>
+                                <div class="p-4 border-t border-gray-700 text-gray-400">
+                                    <p class="mb-2 font-semibold text-white">Prompt mẫu cho Dev học Marketing:</p>
+                                    <blockquote class="border-l-4 border-blue-500 pl-4 py-2 bg-gray-900/50 rounded-r-md">
+                                        <p>Tôi là Developer muốn học Marketing. Background: [skills]. Goal: [automation, growth hacking]. Dựa vào case study [paste 3 examples], hãy tạo 90-day learning roadmap...</p>
+                                    </blockquote>
+                                </div>
+                            </details>
+                             <details class="bg-gray-800/50 border border-gray-700 rounded-lg">
+                                <summary class="p-4 font-semibold text-lg flex justify-between items-center">Bước 3: AI làm personal tutor <span class="text-2xl font-thin transform transition-transform duration-200 details-arrow">+</span></summary>
+                                <div class="p-4 border-t border-gray-700 text-gray-400">
+                                    <p><b class="text-white">Kỹ thuật "Feynman Technique với AI":</b> Giải thích một concept cho AI và yêu cầu nó đánh giá, đặt câu hỏi sâu hơn.</p>
+                                    <p class="mt-2"><b class="text-white">Kỹ thuật "Spaced Repetition với AI":</b> Yêu cầu AI tạo quiz dựa trên những gì đã học.</p>
+                                </div>
+                            </details>
+                             <details class="bg-gray-800/50 border border-gray-700 rounded-lg">
+                                <summary class="p-4 font-semibold text-lg flex justify-between items-center">Bước 4: Build portfolio với AI <span class="text-2xl font-thin transform transition-transform duration-200 details-arrow">+</span></summary>
+                                <div class="p-4 border-t border-gray-700 text-gray-400">
+                                     <p class="mb-2 font-semibold text-white">Prompt tạo project ideas:</p>
+                                     <blockquote class="border-l-4 border-blue-500 pl-4 py-2 bg-gray-900/50 rounded-r-md">
+                                        <p>Dựa vào skill tôi đang học [list skills], suggest 3 portfolio projects ấn tượng, làm được trong 2-3 tuần, có measurable outcome...</p>
+                                     </blockquote>
+                                </div>
+                            </details>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Core Framework Section -->
+        <section class="text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Công thức chung chỉ có 4 bước</h2>
+             <div class="flex flex-col md:flex-row items-center justify-center gap-4 text-xl font-semibold">
+                <span class="bg-gray-800 py-2 px-4 rounded-lg">INPUT</span>
+                <span class="text-blue-400 text-2xl font-mono">&rarr;</span>
+                <span class="bg-gray-800 py-2 px-4 rounded-lg">PATTERN</span>
+                <span class="text-blue-400 text-2xl font-mono">&rarr;</span>
+                <span class="bg-gray-800 py-2 px-4 rounded-lg">OUTPUT</span>
+                <span class="text-blue-400 text-2xl font-mono">&rarr;</span>
+                <span class="bg-gray-800 py-2 px-4 rounded-lg">ITERATE</span>
+            </div>
+        </section>
+
+        <!-- Best Practices Section -->
+        <section>
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-8">Làm đúng để ra kết quả tốt nhất.</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card-do p-6 rounded-xl">
+                    <h3 class="text-2xl font-bold text-green-400 mb-4">✅ NÊN LÀM (Do)</h3>
+                    <ul class="space-y-3 text-gray-300">
+                        <li class="flex items-start"><span class="mr-3 mt-1 text-green-400">✓</span><span>Thu thập đủ 3-10 examples (ít quá = bias, nhiều quá = overwhelm).</span></li>
+                        <li class="flex items-start"><span class="mr-3 mt-1 text-green-400">✓</span><span>Specific prompt: "Analyze these 5 case studies for X pattern" thay vì "Tell me about X".</span></li>
+                        <li class="flex items-start"><span class="mr-3 mt-1 text-green-400">✓</span><span>Yêu cầu AI so sánh và contrast (không chỉ summarize).</span></li>
+                        <li class="flex items-start"><span class="mr-3 mt-1 text-green-400">✓</span><span>Tạo output actionable (checklist, template) chứ không chỉ theory.</span></li>
+                    </ul>
+                </div>
+                <div class="card-dont p-6 rounded-xl">
+                    <h3 class="text-2xl font-bold text-red-400 mb-4">❌ KHÔNG NÊN (Don't)</h3>
+                    <ul class="space-y-3 text-gray-300">
+                         <li class="flex items-start"><span class="mr-3 mt-1 text-red-400">✗</span><span>Copy mù quáng template từ AI mà không customize cho context.</span></li>
+                         <li class="flex items-start"><span class="mr-3 mt-1 text-red-400">✗</span><span>Bỏ qua bước verify - AI có thể hallucinate pattern không tồn tại.</span></li>
+                         <li class="flex items-start"><span class="mr-3 mt-1 text-red-400">✗</span><span>Quá phụ thuộc AI - dùng critical thinking để filter.</span></li>
+                         <li class="flex items-start"><span class="mr-3 mt-1 text-red-400">✗</span><span>Quên track metrics để biết framework có work không.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer class="bg-gray-900/50 border-t border-gray-800">
+        <div class="max-w-6xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-gray-500">
+            <p>&copy; 2024 Reverse Engineering AI. Một sản phẩm được tạo ra để minh họa phương pháp.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            // Details/Summary arrow rotation
+            const detailsElements = document.querySelectorAll('details');
+            detailsElements.forEach(details => {
+                details.addEventListener('toggle', event => {
+                    const arrow = details.querySelector('.details-arrow');
+                    if (details.open) {
+                        arrow.textContent = '-';
+                        arrow.style.transform = 'rotate(180deg)';
+                    } else {
+                        arrow.textContent = '+';
+                        arrow.style.transform = 'rotate(0deg)';
+                    }
+                });
+            });
+
+            // Tab functionality
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.dataset.tab;
+
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    tabContents.forEach(content => {
+                        if (content.id === tabId) {
+                            content.classList.add('active');
+                        } else {
+                            content.classList.remove('active');
+                        }
+                    });
+                });
+            });
+
+            // AI Playground
+            const generateBtn = document.getElementById('generate-btn');
+            const aiInput = document.getElementById('ai-input');
+            const aiOutput = document.getElementById('ai-output');
+            const suggestionBtns = document.querySelectorAll('.suggestion-btn');
+
+            const generateAIResponse = (input) => {
+                aiOutput.classList.remove('hidden');
+                aiOutput.innerHTML = `<div class="text-center text-gray-400">Đang phân tích...</div>`;
+                
+                setTimeout(() => {
+                    const goal = input || "lĩnh vực của bạn";
+                    const formattedGoal = goal.replace("...cho", "cho");
+                    
+                    const responseHTML = `
+                        <h4 class="text-xl font-bold text-blue-400 mb-3">Quy trình mẫu được đề xuất cho: "${formattedGoal}"</h4>
+                        <div class="space-y-3 text-gray-300">
+                            <p><strong class="text-white">1. Thu thập dữ liệu mẫu:</strong> Tìm kiếm 5-7 case study hàng đầu ${formattedGoal}. Tập trung vào những người/tổ chức đã đạt được kết quả mà bạn mong muốn.</p>
+                            <p><strong class="text-white">2. Phân tích với AI:</strong> Sử dụng prompt: "Phân tích 5 case study này về ${formattedGoal}. Trích xuất chiến lược cốt lõi, công cụ sử dụng và những sai lầm phổ biến họ đã tránh."</p>
+                            <p><strong class="text-white">3. Tổng hợp Framework:</strong> AI sẽ giúp tạo ra một "Checklist Khởi Đầu" gồm 10 bước và một "Template Kế Hoạch 30 Ngày" để bạn bắt đầu.</p>
+                            <p><strong class="text-white">4. Áp dụng & Tùy chỉnh:</strong> Bắt đầu với tuần đầu tiên của kế hoạch. Theo dõi tiến độ và điều chỉnh checklist dựa trên kết quả thực tế của bạn.</p>
+                        </div>
+                    `;
+                    aiOutput.innerHTML = responseHTML;
+                }, 1000);
+            };
+
+            generateBtn.addEventListener('click', () => {
+                if (aiInput.value.trim() !== '') {
+                    generateAIResponse(aiInput.value.trim());
+                } else {
+                    aiOutput.classList.remove('hidden');
+                    aiOutput.innerHTML = `<div class="text-center text-red-400">Vui lòng nhập lĩnh vực hoặc vấn đề của bạn.</div>`;
+                }
+            });
+            
+            suggestionBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const suggestionText = btn.textContent;
+                    aiInput.value = suggestionText;
+                    generateAIResponse(suggestionText);
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>
